@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        if (nums.size() == 0) { 
+            return nums.size();
+        }
+        
+        int nowIndex = 0;
+        int appearTime = 0;
+        for (int i = 1; i < nums.size(); i++) {
+            if (nums[nowIndex] == nums[i]) {
+                appearTime++;
+                if (appearTime >= 2) // 同一个数超过次数就不管了 如 1 1 1 1 
+                    continue;
+            }
+            else // 一旦不同重置计数器
+                appearTime = 0;
+            
+	        nowIndex++; // 运行到这的是在限制次数以内的
+            nums[nowIndex] = nums[i];
+        }
+        return nowIndex + 1;
+    }
+};

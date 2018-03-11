@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        if (nums.size() == 0)
+            return 0;
+        
+        unordered_map<int, bool> hashSet; // 哈希stl未来的标准 查询是O(1)
+        for (int i = 0; i < nums.size(); i++) // 记录所有数
+            hashSet[nums[i]] = true; // 两个应该都重载[]
+        
+        int longestSeqSize = 1;
+        for (int i = 0; i < nums.size(); i++) { // 遍历
+            int size = 1;
+            int tmp = nums[i];
+            if (hashSet[tmp]) { // 对每个数找上下相连
+                while (hashSet[--tmp]) {
+                    size++;
+                    hashSet[tmp] = false; // 计算过的删去 保证线性复杂度
+                }
+                tmp = nums[i];
+                while (hashSet[++tmp]) {
+                    size++;
+                    hashSet[tmp] = false;
+                }
+                hashSet[tmp] = false;
+            }
+            if (size > longestSeqSize)
+                longestSeqSize = size;
+        }
+        return longestSeqSize;
+    }
+};

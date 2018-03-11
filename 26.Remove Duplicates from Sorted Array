@@ -1,0 +1,18 @@
+	class Solution {
+	public:
+	    int removeDuplicates(vector<int>& nums) { // 已经排好序  in-place要求就在原数组上完成
+	        if (nums.size() == 0) { // 基本情况一定考虑
+	            return 0;
+	        }
+	        
+	        // 两重循环的数组前移方法会超时
+	        int nowIndex = 0; // 本算法关键 其指向过的所有数即是最后无重复的数组
+	        for (int i = 1; i < nums.size(); i++) { 
+	            if (nums[nowIndex] != nums[i]) {// 重复的值就不被nowIndex记录
+	                nowIndex++;
+	                nums[nowIndex] = nums[i];
+	            }
+	        }
+	        return nowIndex + 1;
+	    }
+};
