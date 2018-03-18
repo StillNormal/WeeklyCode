@@ -1,0 +1,51 @@
+class Solution {
+public:
+    bool check(bool used[], int num) {
+        if (num < 0 || num > 8)
+            return true;
+        
+        if (used[num])
+            return false;
+        else {
+            used[num] = true;
+            return true;
+        }
+    }
+    
+    bool isValidSudoku(vector<vector<char>>& board) {        
+        // 要求只考虑已填入的数
+        for (int i = 0; i < 9; i++) {
+            bool used[9] = {0};
+            for (int j = 0; j < 9; j++) {                
+                int num = board[i][j] - '0' - 1;
+                if (!check(used, num))
+                    return false;
+            }
+        }
+        
+        for (int j = 0; j < 9; j++) {
+            bool used[9] = {0};
+            for (int i = 0; i < 9; i++) {
+                int num = board[i][j] - '0' - 1;
+                if (!check(used, num))
+                    return false;
+            }
+        }
+                
+        for (int i = 0; i < 9; i += 3) {
+            for (int j = 0; j < 9; j += 3) {
+                // 找到各子数独左上角顶点
+                bool used[9] = {0};
+                for (int m = 0; m < 3; m++) {
+                    for (int n = 0; n < 3; n++) {
+                        int num = board[i + m][j + n] - '0' - 1;
+                        if (!check(used, num))
+                            return false;
+                    }
+                }
+            }
+        }
+        
+        return true;
+    }
+};

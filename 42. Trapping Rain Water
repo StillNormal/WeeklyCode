@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int total = 0;
+        for (int i = 0; i < height.size(); i++) {
+            int leftMax = -1;
+            int rightMax = -1;
+            // 找左边最大
+            for (int left = i - 1; left >= 0; left--) {                
+                if (height[left] > leftMax)
+                    leftMax = height[left];
+            }
+            // 找右边最大
+            for (int right = i + 1; right < height.size(); right++) {
+                if (height[right] > rightMax)
+                    rightMax = height[right];             
+            }
+            
+            if (leftMax < height[i] || rightMax < height[i])
+                total += 0; // 水流出
+            else
+                total += min(leftMax, rightMax) - height[i]; // 装一管
+        }
+        return total;
+    }
+};

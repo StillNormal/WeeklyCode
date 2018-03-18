@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> answers;
+        if (nums.size() < 3)
+            return answers;
+        
+        sort(nums.begin(), nums.end()); 
+        
+        // 相比2sum不要求下标 就可先排序 外一层循环后里面两边向中间夹 推广到kSum是O(n^k-1)
+        for (int i = 0; i < nums.size() - 2; i++) {
+            if (i != 0 && nums[i] == nums[i - 1]) // 要求答案不能重复 考虑第一个数
+                continue;
+            int left = i + 1;
+            int right = nums.size() - 1;
+            int otherNum = 0 - nums[i];
+            int lastleftNum = nums[left] - 1; // 初始化 保证和left不同
+            while (left < right) { // O(n)
+                while (nums[left] == lastleftNum) // 要求答案不能重复 考虑第二个数
+                    left++;
+                
+                if (nums[left] + nums[right] < otherNum)
+                    left++;
+                else if (nums[left] + nums[right] > otherNum)
+                    right--;
+                else {
+                    vector<int> answer;
+                    answer.push_back(nums[i]);
+                    answer.push_back(nums[left]);
+                    answer.push_back(nums[right]);
+                    answers.push_back(answer);
+                    lastleftNum = nums[left];
+                    left++; // 还有新情况 统一从左端向右步进
+                }
+            }
+        }
+        
+        return answers;
+    }
+};
