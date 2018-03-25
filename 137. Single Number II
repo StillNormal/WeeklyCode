@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int digits[32];
+        for (int i = 0; i < 32; i++)
+            digits[i] = 0;
+        
+        for (int i = 0; i < nums.size(); i++) {
+            int bits = 0;
+            while (bits < 32) {
+                // 注意该数学方法无法处理负数
+                // digits[bits] += nums[i] % 2;
+                // nums[i] /= 2;
+                digits[bits] += (nums[i] >> bits) & 1; // 右移后取1位
+                bits++;
+            }
+        }        
+        
+        for (int i = 0; i < 32; i++) // 如果一个元素出现三次，那32位中每位它要贡献3个1或0个1
+            digits[i] %= 3;
+        
+        long long int ans = 0; // 只剩下一个数，求回答案
+        for (int i = 0; i < 32; i++)
+            ans += digits[i] * pow(2, i);
+        return ans;
+    }
+};

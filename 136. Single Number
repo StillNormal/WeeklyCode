@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        // N1 ^ N1 ^ N2 ^ N2 ^..............^ Nx ^ Nx ^ N
+        // = (N1^N1) ^ (N2^N2) ^..............^ (Nx^Nx) ^ N
+        // = 0 ^ 0 ^ ..........^ 0 ^ N
+        // = N
+        int ans = 0;
+        for (int i = 0; i < nums.size(); i++)
+            ans ^= nums[i];
+        return ans;
+    }
+};

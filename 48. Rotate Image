@@ -1,0 +1,27 @@
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int tmp;
+        int n = matrix.size();
+        // 先做关于y = x的变换
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i + j < n) {
+                    tmp = matrix[i][j];
+                    matrix[i][j] = matrix[n - 1 - j][n -1 - i];
+                    matrix[n -1 - j][n -1 - i] = tmp;
+                }
+            }
+        }
+        // 再做关于x = 0的变换
+        for (int i = 0; i < n / 2; i++) {
+            for (int j = 0; j < n; j++) {
+                tmp = matrix[i][j];
+                matrix[i][j] = matrix[n - 1 - i][j];
+                matrix[n - 1 - i][j] = tmp;
+            }
+        }
+        
+        return;
+    }
+};

@@ -1,0 +1,38 @@
+class Solution {
+public:
+    struct child {
+        int oriPos;
+        int rating;
+    };
+    
+    static bool cmp(child c1, child c2) {
+        return c1.rating < c2.rating; // 规定小于关系
+    }
+    
+    int candy(vector<int>& ratings) {
+        int n = ratings.size();
+        vector<child> vec;
+        vector<int> candies;
+        for (int i = 0; i < n; i++) {
+            child c = {i, ratings[i]};
+            vec.push_back(c);
+            candies.push_back(1);
+        }
+        
+        sort(vec.begin(), vec.end(), cmp);
+        
+        // 基本思路 从最小rating的开始往上 对每个单位根据其左右蜡烛数分配蜡烛
+        int total = 0;
+        for (int i = 0; i < n; i++) {
+            int oriPos = vec[i].oriPos;
+            int maxCandy = 1;
+            if (oriPos - 1 >= 0 && vec[i].rating > ratings[oriPos - 1])
+                maxCandy = maxCandy > candies[oriPos - 1] + 1 ? maxCandy : candies[oriPos - 1] + 1;
+            if (oriPos + 1 < n && vec[i].rating > ratings[oriPos + 1])
+                maxCandy = maxCandy > candies[oriPos + 1] + 1 ? maxCandy : candies[oriPos + 1] + 1;
+            candies[oriPos] = maxCandy;
+            total += maxCandy;
+        }
+        return total;
+    }
+};

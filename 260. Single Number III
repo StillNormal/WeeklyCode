@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        int twoNumSum = 0;
+        for (int i = 0; i < nums.size(); i++) 
+            twoNumSum ^= nums[i]; // 剩下的是两数异或值
+        
+        int rightShiftCnt = 0;
+        int digit = twoNumSum & 1; // 挑一个bit用来将数组划分成两半 两边数组分别异或掉其中相同数后 剩下两数 且这位分别是01
+        while (digit != 1) { // 0的话有可能是00、11 但1一定能区分01 
+            twoNumSum = twoNumSum >> 1;
+            digit = twoNumSum & 1;
+            rightShiftCnt++;
+        }        
+        
+        int groupOneXor = 0; // 左数组所有数异或之和
+        int groupTwoXor = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            int tmp = nums[i]; // 找到同样的位
+            for (int j = 0; j < rightShiftCnt; j++)
+                tmp = tmp >> 1;
+            tmp = tmp & 1;
+            
+            if (digit == tmp)
+                groupOneXor ^= nums[i];
+            else
+                groupTwoXor ^= nums[i];
+        }
+        
+        vector<int> ans;
+        ans.push_back(groupOneXor);
+        ans.push_back(groupTwoXor);
+        return ans;
+    }
+};

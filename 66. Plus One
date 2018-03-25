@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+        bool carryBit = true;
+        for (int i = digits.size() - 1; i >= 0; i--) {
+            if (!carryBit)
+                continue;
+            
+            if (digits[i] + 1 == 10) {
+                digits[i] = 0;
+                carryBit = true;
+            }
+            else {                
+                digits[i]++;
+                carryBit = false;
+            }
+        }
+        if (carryBit)
+            digits.insert(digits.begin(), 1);
+            
+        return digits;
+    }
+};
