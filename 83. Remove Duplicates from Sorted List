@@ -1,0 +1,32 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        ListNode* cur;
+        if (head != NULL && head->next != NULL)
+            cur = head->next;
+        else
+            return head;
+        
+        ListNode* ans = head; 
+        while (cur != NULL) { // 其实和数组移除相同元素的思路一样 但链表更容易想到并实现
+            if (cur->val == ans->val) {
+                cur = cur->next;
+                ans->next = cur;
+            }
+            else {
+                ans = cur;
+                cur = cur->next;
+            }
+        }
+        
+        return head;
+    }
+};

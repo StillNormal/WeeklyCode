@@ -1,0 +1,63 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* head = NULL;
+        ListNode* tail = NULL; // 将q的值加到p上 节省空间但不如新建一个链表直接
+        int carry = 0; // 进位
+        while (l1 != NULL || l2 != NULL) { // 遍历后将某条链尾多出的接上的做法要考虑三种情况 且进位实现复杂
+            int sum = carry;
+            if (l1 != NULL) { // 好思路是两链都遍历完
+                sum += l1->val;
+                l1 = l1->next;
+            }
+            if (l2 != NULL) {
+                sum += l2->val;
+                l2 = l2->next;                
+            }
+            carry = sum / 10;
+            sum %= 10;
+            
+            ListNode* node = new ListNode(sum);
+            if (head == NULL) {
+                head = node;
+                tail = node;
+            }
+            else {
+                tail->next = node;
+                tail = node;
+            }
+        }
+        
+        if (carry) {
+            ListNode* node = new ListNode(1);
+            tail->next = node;
+        }
+        return head;
+        
+        
+        /* 若要求返回一个数
+        int ans = 0;
+        ListNode* p;
+        ListNode* q;
+        int base = 1;
+        while (p->next != NULL || q->next != NULL) { // 这里因为不用考虑链尾相接 反而直接用了好思路
+            if (p->next != NULL)
+                ans += p->val * base;
+            else if (q->next != NULL)
+                ans += q->val * base;
+            else
+                ans += (p->val + q->val) * base;
+            base *= 10;
+        }
+        return ans;
+        */
+    }
+};
