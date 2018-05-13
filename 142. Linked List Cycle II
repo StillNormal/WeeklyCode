@@ -1,0 +1,36 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode *quick = head, *slow = head, *last = head;
+        do { // 纠正上一题写法 会导致相遇点提前
+            if (quick == NULL)
+                break;
+            quick = quick->next;
+            if (quick == NULL)
+                break;
+            quick = quick->next;
+            slow = slow->next;
+        } while (quick != slow);
+        
+        if (quick == NULL) // 无环返回
+            return NULL;
+        
+        // 一个k步 一个2k步 交叉点离起始位置m 环上c点相遇 环长r
+        // k = m + c
+        // 2k = m + c + n*r
+        // m = (n-1) * r + r - c
+        // 需求m或r-c 但如此说明再走m和r-c恰好相遇在交叉点上
+        for (; last != slow; last = last->next, slow = slow->next) {
+        }
+        
+        return last;
+    }
+};

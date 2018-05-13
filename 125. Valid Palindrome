@@ -1,0 +1,22 @@
+#include <algorithm>
+
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        int len = s.size();
+        transform(s.begin(), s.end(), s.begin(), ::tolower); // 转换小写 ::指定tolower是C版本 第三个参数是结果容器
+        for (int p = 0, q = len - 1; p < q; p++, q--) {
+            while ((s[p] < 'a' || s[p] > 'z') && (s[p] < '0' || s[p] > '9'))
+                p++;
+            while ((s[q] < 'a' || s[q] > 'z') && (s[q] < '0' || s[q] > '9'))
+                q--;
+            if (p >= q)
+                break;
+            
+            if (s[p] != s[q])
+                return false;
+        }
+        
+        return true;
+    }
+};

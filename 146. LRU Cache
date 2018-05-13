@@ -1,0 +1,89 @@
+class LRUCache {
+private:
+    struct ListNode {
+        int key;
+        int val;
+        ListNode *next, *prev; // 在删除节点时要找前一个 故需双向链表
+        ListNode(int key, int val) {
+            this->key = key;
+            this->val = val;
+            next = NULL;
+            prev = NULL;
+        }
+    };
+    
+public:
+    int size;
+    int capacity;
+    ListNode *head, *tail = NULL;
+    unordered_map<int, ListNode*> m; // 支持查找O(1)
+    
+    LRUCache(int capacity) {
+        size = 0;
+        this->capacity = capacity; // 一定要this!!!
+        head = new ListNode(111111, 111111);
+    }
+    
+    int get(int key) { 
+        if (m[key] == NULL)
+            return -1;
+
+        int val = del(key); // 这里一个简化思路是不去移动结点 而是删除它再重新插入!!
+        insert_after_head(key, val); // 在内部m表更新过
+        
+        return val;
+    }
+    
+    void put(int key, int value) {                
+        if (m[key] != NULL) { // 更新值
+            del(key);
+            insert_after_head(key, value); // 不是val
+            return;
+        }
+        
+        size++;
+        if (size > capacity) {
+            del(tail->key);            
+            insert_after_head(key, value);            
+            size = capacity;
+        }
+        else 
+            insert_after_head(key, value);
+        
+        return;
+    }
+    
+    int del(int key) {
+        ListNode* p = m[key];        
+        int val = p->val;
+        p->prev->next = p->next;
+        if (p == tail)
+            tail = p->prev;
+        else // 除tail结点外next都不为NULL
+            p->next->prev = p->prev;
+        m.erase(key);
+        
+        return val;
+    }
+    
+    void insert_after_head(int key, int val) { // 尾插法 但插入点在头结点后
+        ListNode* p = new ListNode(key, val);
+        m[key] = p;
+        p->next = head->next;
+        if (p->next != NULL)
+            p->next->prev = p;
+        else // 第一个插入的就是tail
+            tail = p;
+        p->prev = head;
+        head->next = p;
+     
+        return;
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */

@@ -1,0 +1,23 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {L
+        ListNode *quick = head; // 这里不需pre节点技巧 因为是同时出发 仅速度不同
+        for(ListNode *slow = head; quick != NULL; quick = quick->next, slow = slow->next) { // slow在后面没风险 for循环条件会先判断！
+            quick = quick->next;
+            if (quick == NULL) // 永远不要直接去判断next!
+                break;
+            if (quick == slow)
+                break;
+        }
+        
+        return quick == NULL ? false : true;        
+    }
+};
