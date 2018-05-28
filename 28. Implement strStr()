@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        if (needle.size() == 0) // 特殊情况解不同
+            return 0;
+        
+        for (int i = 0; i < haystack.size(); i++) {
+            bool equal = true;
+            for (int j = 0; j < needle.size(); j++) {
+                if (haystack[i+j] != needle[j]) {
+                    equal = false;
+                    break;
+                }
+            }
+            if (equal)
+                return i;
+        }
+        
+        return -1;
+    }
+};

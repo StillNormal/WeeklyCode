@@ -1,0 +1,48 @@
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        if (s.size() == 0 && s.size() == 1)
+            return s;
+        
+        int longest = -1;
+        int longest_left = 0, longest_right = 0;
+        for (int i = 0; i < s.size(); i++) { // 暴力 以每元素为中心 左右同时搜
+            int left = i;
+            int right = i;
+            bool first = true;
+            while (s[left] == s[right]) {
+                if (first ) { // 左指针先不动
+                    left++;
+                    first = false;
+                }
+                left--;
+                right++;
+                if (!(left >= 0 && right < s.size()))
+                    break;                    
+            }                
+            
+            if (right - left >= longest) {
+                longest = right - left;
+                longest_left = left + 1; // 最后一轮是多移动的
+                longest_right = right - 1;
+            }
+            
+            left = i;
+            right = i;
+            while (s[left] == s[right]) {
+                left--;
+                right++;
+                if (!(left >= 0 && right < s.size()))
+                    break;                    
+            }                
+            
+            if (right - left >= longest) {
+                longest = right - left;
+                longest_left = left + 1; // 最后一轮是多移动的
+                longest_right = right - 1;
+            }
+        }
+        string result = s.substr(longest_left, longest_right - longest_left + 1);
+        return result;
+    }
+};
