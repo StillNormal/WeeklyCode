@@ -1,0 +1,29 @@
+// 统计一个数字在排序数组中出现的次数。
+
+class Solution {
+public:
+    int GetNumberOfK(vector<int> data ,int k) {
+        int p = 0, q = data.size(), mid = -1;
+        bool find = false;
+        while (p < q) {
+            mid = p + (q - p) / 2;
+            if (k == data[mid]) {
+                find = true;
+                break;
+            }
+            else if (k > data[mid])
+                p = mid + 1;
+            else
+                q = mid - 1;
+        }
+        if (!find)
+            return 0;
+        
+        int cnt = 1; // 以二分为基础即可
+        for (int i = mid+1; i < data.size() && data[i] == data[mid]; i++)
+            cnt++;
+        for (int i = mid-1; i >= 0 && data[i] == data[mid]; i--)
+            cnt++;
+        return cnt;
+    }
+};

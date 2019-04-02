@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int parent[200];
+    
+    int find(int node) {
+        queue<int> compress;
+        while (parent[node] != node) {
+            node = parent[node];
+            compress.push(node);
+        }
+        while (!compress.empty()) {
+            int child = compress.front();
+            parent[child] = node;
+            compress.pop();
+        }
+        return node;
+    }
+    
+    int findCircleNum(vector<vector<int>>& M) {
+        int n = M[0].size();
+        int total = n; // 计数技巧
+        for (int i = 0; i < n; i++)
+            parent[i] = i;
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (M[i][j]) {
+                    int i_root = find(i);
+                    int j_root = find(j);
+                    if (i_root != j_root) { // union
+                        parent[j_root] = i_root; // 不是i和j
+                        total--;
+                    }
+                }
+            }
+        }
+        return total;
+    }
+};

@@ -2,7 +2,7 @@ class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
         // 两个指针从头分别指的方法在O（k），达不到log级别
-          int m = nums1.size();
+        int m = nums1.size();
         int n = nums2.size();
         int total = m + n;
         if (total % 2 == 1)

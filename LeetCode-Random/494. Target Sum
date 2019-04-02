@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int cnt = 0;
+    int findTargetSumWays(vector<int>& nums, int S) { //       
+        find(nums, -1, S);
+        return cnt;
+    }
+    
+    void find(vector<int>& nums, int i, int S) {
+        if (S > 1000 || S < -1000) //
+            return;
+        
+        if (i == nums.size() - 1) {
+            if (S == 0)
+                cnt++;
+            return;
+        }
+        
+        i++;
+        find(nums, i, S+nums[i]);
+        find(nums, i, S-nums[i]);
+    }
+};

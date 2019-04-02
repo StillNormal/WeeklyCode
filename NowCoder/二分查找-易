@@ -1,0 +1,17 @@
+class BinarySearch {
+public:
+    int getPos(vector<int> A, int n, int val) {
+        int p = 0, q = n, mid = 0;
+        while (p <= q) { // 这里考虑夹到同一元素
+            mid = (p+q) / 2;
+            if (A[mid] == val)
+                return mid;
+            else if (A[mid] < val)
+                p = mid + 1; // 这里需要后移
+            else 
+                q = mid - 1;
+        }
+        
+        return -1;
+    }
+};

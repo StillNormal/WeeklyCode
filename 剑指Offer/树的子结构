@@ -1,0 +1,37 @@
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+
+
+// 输入两棵二叉树A，B，判断B是不是A的子结构。（约定空树不是任意一个树的子结构，层次遍历） 
+
+class Solution {
+public:
+    bool same(TreeNode* pRoot1, TreeNode* pRoot2) {
+        if (pRoot2 == NULL) // 关键 先判断Root2再判断Root1及时停止
+            return true;
+        if (pRoot1 == NULL)
+            return false;
+
+        if (pRoot1->val == pRoot2->val)
+            return same(pRoot1->left, pRoot2->left) && same(pRoot1->right, pRoot2->right);
+        else
+            return false;
+    }
+    
+    bool HasSubtree(TreeNode* pRoot1, TreeNode* pRoot2) {
+        if (pRoot1 == NULL || pRoot2 == NULL) // 防空结点 约定空数非任意子结构
+            return false;
+   
+        if (same(pRoot1, pRoot2))
+            return true;
+        else
+            return HasSubtree(pRoot1->left, pRoot2) || HasSubtree(pRoot1->right, pRoot2);
+    }
+};

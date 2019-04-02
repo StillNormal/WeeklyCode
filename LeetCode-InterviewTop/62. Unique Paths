@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int combine(int a, int b) { // C(a, b) = C(a-1, b) + C(a-1, b-1)
+        long ans = 1; //
+        for (int i = 1; i <= b; i++) { //
+            ans *= a + 1 - i;
+            ans /= i;
+        }
+        return ans;
+    }
+    
+    int uniquePaths(int m, int n) {
+        int a = m - 1 + n - 1;
+        int b = min(n - 1, a - (n - 1)); //
+        return combine(a, b);
+    }
+};

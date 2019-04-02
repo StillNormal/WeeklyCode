@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int n = nums.size();
+        int* min_a = new int[n]; // 关键 考虑负数情况需要两个dp
+        int* max_a = new int[n];
+        min_a[0] = nums[0];
+        max_a[0] = nums[0];
+        
+        for (int i = 1; i < n; i++) {
+            int tmp1 = max_a[i-1] * nums[i];
+            int tmp2 = min_a[i-1] * nums[i];
+            max_a[i] = max(nums[i], max(tmp1, tmp2)); // 三数比大小的技巧
+            min_a[i] = min(nums[i], min(tmp1, tmp2));
+        }
+        
+        int an = max_a[0]; // 这里可以中途记录继续简化
+        for (int i = 1; i < n; i++) {
+            if (max_a[i] > an)
+                an = max_a[i];
+        }
+        
+        return an;
+    }
+};

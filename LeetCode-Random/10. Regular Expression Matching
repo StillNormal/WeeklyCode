@@ -1,0 +1,25 @@
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        return match(s, 0, p, 0);
+    }
+    
+    bool match(string& s, int m, string& p, int n) { // 不加&会TLE
+        if (m > s.size())
+            return false;
+        if (n == p.size())
+            return m == s.size() ? true : false;
+            
+        if (n + 1 < p.size() && p[n+1] == '*') { // 关键
+            if (s[m] == p[n] || p[n] == '.')
+                return match(s, m, p, n+2) || match(s, m+1, p, n); // 关键之关键
+            else
+                return match(s, m, p, n+2);
+        }
+        
+        if (p[n] == '.')
+            return match(s, m+1, p, n+1);
+        else
+            return s[m] == p[n] ? match(s, m+1, p, n+1) : false;
+    }
+};

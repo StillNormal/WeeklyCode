@@ -1,0 +1,48 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+
+class Solution {
+public:
+    /*
+     * @param root: The root of the BST.
+     * @param p: You need find the successor node of p.
+     * @return: Successor of p.
+     */
+    TreeNode * inorderSuccessor(TreeNode * root, TreeNode * p) {
+        if (root == NULL || p == NULL)
+            return NULL;
+            
+        if (p->right != NULL) { // case 1
+            TreeNode* t = p->right;
+            while (t->left != NULL)
+                t = t->left;
+            return t;
+        }
+        
+        TreeNode* r = root;
+        TreeNode* last_left = NULL;
+        while (r->left != p && r->right != p) {
+            if (r == p)
+                break;
+            if (r->val < p->val)
+                r = r->right;
+            else {
+                r = r->left;
+                last_left = r;
+            }
+        }
+        
+        if (r->left == p) // case 2
+            return r;
+        else // case 3
+            return last_left;
+    }
+};

@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int longestSubstring(string s, int k) { // 子串连续的特点 递归切割分治
+        vector<int> re(26, 0);
+        for (int i = 0; i < s.size(); i++)
+            re[s[i]-'a']++;
+        
+        char split;
+        bool flag = true;
+        for (int i = 0; i < 26; i++) {
+            if (re[i] < k && re[i] != 0) {
+                split = i + 'a';
+                flag = false;
+                break;
+            }
+        }
+        if (flag)
+            return s.size();
+        
+        int left = -1, right = -1;
+        for (int i = 0; i < s.size(); i++) {
+            if (s[i] == split) {
+                left = longestSubstring(s.substr(0, i), k);
+                right = longestSubstring(s.substr(i+1, s.size()), k);
+                break;
+            }
+        }
+        
+        return max(left, right);
+    }
+};

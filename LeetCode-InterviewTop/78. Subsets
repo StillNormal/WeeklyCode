@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<vector<int>> an;
+    
+    void add(vector<int>& nums, int i, vector<int> subset) {
+        if (i == nums.size()) {
+            an.push_back(subset);
+            return;
+        }
+        
+        add(nums, i+1, subset);
+        subset.push_back(nums[i]); // 加与不加 这是个问题
+        add(nums, i+1, subset);
+        
+    }
+    
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<int> subset;
+        add(nums, 0, subset);
+        return an;
+    }
+};

@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int mySqrt(int x) {        
+        // 标准版是二分查找
+        if (x == 1)
+            return 1;
+        
+        for (long long int i = 0; i <= x; i++) { // 关键 越界
+            if (i * i > x) {
+                return i - 1;
+            }
+        }
+        
+        return 0;
+    }
+};

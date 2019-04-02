@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool increasingTriplet(vector<int>& nums) {
+        // 不满足空间要求 但容易想到 预处理两遍
+        int n = nums.size();
+        if (n <= 2)
+            return false;
+        
+        vector<int> forward(n, nums[0]);
+        vector<int> backward(n, nums.back());
+        for (int i = 1; i < n; i++)
+            forward[i] = min(forward[i-1], nums[i]);
+        for (int i = n - 2; i >= 0; i--)
+            backward[i] = max(backward[i+1], nums[i]);
+        
+        for (int i = 0; i < n; i++) {
+            if (forward[i] < nums[i] && nums[i] < backward[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+};

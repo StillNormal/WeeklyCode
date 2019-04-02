@@ -1,0 +1,10 @@
+class Solution {
+public:
+    int Fibonacci(int n) {
+        int a[10] = {0, 1, 1, 2, 3, 5, 8, 13, 21, 34}; // 关键 节约时间
+        if (n < 10)
+            return a[n];
+        
+        return Fibonacci(n-1) + Fibonacci(n-2);
+    }
+};

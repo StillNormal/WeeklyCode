@@ -1,0 +1,45 @@
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<pair<int, int>>& prerequisites) {
+        // 有向图拓扑排序法检测有无环 无向图的话也是类似删除不满足度的结点
+        vector<vector<int>> graph; // 邻接表
+        bool exist[numCourses]; // 区分该结点是否存在 剪枝降低时间
+        for (int i = 0; i < numCourses; i++) {
+            vector<int> in_edge; // 记录入边
+            graph.push_back(in_edge);
+            exist[i] = false;
+        }
+        for (int i = 0; i < prerequisites.size(); i++) { // 0-》1 1-》null 入边1
+            graph[prerequisites[i].second].push_back(prerequisites[i].first);
+            exist[prerequisites[i].first] = true;
+            exist[prerequisites[i].second] = true;
+        }
+        
+        bool flag = true;
+        while (flag) {
+            flag = false;
+            for (int i = 0; i < numCourses; i++) {
+                if (exist[i] && graph[i].size() == 0) {
+                    for (int j = 0; j < numCourses; j++) {
+                        if (!exist[j])
+                            continue;
+                        vector<int>::iterator it;
+                        it = find(graph[j].begin(), graph[j].end(), i); // 循环易错
+                        if (it != graph[j].end()) {
+                            graph[j].erase(it);
+                            flag = true;
+                        }
+                    }
+                    exist[i] = false;
+                }
+            }
+        }
+        
+        for (int i = 0; i < numCourses; i++) {
+            if (graph[i].size() > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+};

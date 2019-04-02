@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int output(double num, bool pos) {
+        if (pos && num > INT_MAX)
+            return INT_MAX;
+        if (!pos && num < INT_MIN)
+            return INT_MIN;    
+        
+        return pos ? num : -num;
+    }
+    
+    int myAtoi(string str) { // 异常情况太多 逻辑乱些就乱些
+        bool pos = true;
+        bool firstChar = true;
+        double num = 0;
+        for (int i = 0; i < str.size(); i++) {
+            if (str[i] == ' ') {
+                if (firstChar)
+                    continue;
+                else
+                    return output(num, pos);
+            }
+            
+            if (firstChar) {
+                firstChar = false;
+                if (str[i] == '-')
+                    pos = false;
+                else if (str[i] == '+')
+                    pos = true;
+                else if (str[i] < '0' || str[i] > '9')
+                    return 0;
+                else if (str[i] >= '0' && str[i] <= '9') {
+                    num *= 10;
+                    num += str[i] - '0';
+                }
+                else
+                    return output(num, pos);
+            }
+            else if (str[i] >= '0' && str[i] <= '9') {
+                num *= 10;
+                num += str[i] - '0';
+            }
+            else
+                return output(num, pos);
+        }
+        
+        return output(num, pos);
+    }
+};

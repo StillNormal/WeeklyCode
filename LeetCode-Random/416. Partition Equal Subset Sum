@@ -1,0 +1,41 @@
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int val = accumulate(nums.begin(), nums.end(), 0);
+        if (val % 2 == 1)
+            return false;
+        
+        vector<bool> canArrive(val/2+1, false);
+        canArrive[0] = true;
+        for (int i = 0; i < nums.size(); i++) {
+            for (int j = canArrive.size() - 1; j >= 0; j--) { //
+                if (canArrive[j] && (j + nums[i] <= val/2))
+                    canArrive[j + nums[i]] = true;
+            }
+        }
+        
+        return canArrive[val/2];
+        
+        // dfs
+        
+        /*
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        
+        int left = 0, right = n - 1;
+        int left_sum = 0, right_sum = 0;
+        while (left <= right) {
+            if (left_sum <= right_sum) {
+                left_sum += nums[left];
+                left++;
+            }
+            else {
+                right_sum += nums[right];
+                right--;
+            }
+        }
+        
+        return left_sum == right_sum ? true : false;
+        */
+    }
+};

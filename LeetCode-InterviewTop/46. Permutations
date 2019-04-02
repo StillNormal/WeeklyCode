@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<vector<int>> an;
+    
+    void permutation(vector<int>& nums, int cnt) {
+        if (cnt == nums.size() - 1) {
+            an.push_back(nums);
+            return;
+        }
+        
+        for (int i = cnt; i < nums.size(); i++) {
+            swap(nums[cnt], nums[i]); // 关键
+            permutation(nums, cnt + 1);
+            swap(nums[cnt], nums[i]);
+        }
+    }
+    
+    vector<vector<int>> permute(vector<int>& nums) {
+        permutation(nums, 0);
+        return an;
+    }
+};

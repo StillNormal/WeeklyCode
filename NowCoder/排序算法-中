@@ -1,0 +1,192 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+void vector_sort(int A[], int n) {
+    vector<int> v(A, A + n);
+    sort(v.begin(), v.end());
+    
+    for (int i = 0; i < v.size(); i++)
+        cout << v[i] << ' ';
+    cout << endl;    
+}
+
+void bubble_sort(int A[], int n) {
+    for (int i = n - 1; i >= 0; i--) { // 每次冒一个最大的元素到<尾部>
+        for (int j = 0; j < i; j++) {
+            if (A[j] > A[j+1]) { // 通过<滚动>交换
+                int tmp = A[j];
+                A[j] = A[j+1];
+                A[j+1] = tmp;
+            }
+        }
+    }
+    for (int i = 0; i < n; i++)
+        cout << A[i] << ' ';
+    cout << endl;   
+}
+
+void select_sort(int A[], int n) { // 选一个<未排序列>最小的放到<已排序列后> 
+     for (int i = 0; i < n; i++) {
+        for (int j = i+1; j < n; j++) { // 最常规写法就是
+            if (A[i] > A[j]) {
+                int tmp = A[i];
+                A[i] = A[j];
+                A[j] = tmp;       
+            }
+        }
+    }
+    for (int i = 0; i < n; i++)
+        cout << A[i] << ' ';
+    cout << endl;  
+}
+
+void insert_sort(int A[], int n) { // <扑克牌> 将<已排序列>后的一个数插到正确位置
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < i; j++) {
+            if (A[i] < A[j]) {
+                int tmp = A[i];
+                A[i] = A[j];
+                A[j] = tmp;       
+            }
+        }
+    }
+    for (int i = 0; i < n; i++)
+        cout << A[i] << ' ';
+    cout << endl;  
+}
+
+void heap_sort(int A[], int n) { // 自己实现的话要建堆+堆顶元素siftdown 不稳定
+    priority_queue<int> pq;
+    for (int i = 0; i < n; i++)
+        pq.push(-1 * A[i]); // 翻转为最小堆
+    
+    while (pq.size() != 0) {
+        cout << -1 * pq.top() << ' ';
+        pq.pop();
+    }
+    cout << endl;
+}
+
+void siftDown(int A[], int root, int bottom) { // 维护root到bottom间堆的性质 假定左右子树都是堆
+    int left = 2 * root + 1, right = 2 * root + 2;
+    int val = A[root];
+    if (left <= bottom) // 边界也需注意
+        val = max(val, A[left]);
+    if (right <= bottom)
+        val = max(val, A[right]);
+    if (val != A[root]) {
+        int index = (val == A[left] ? left : right);
+        swap(A[index], A[root]); // 换地址 千万不能写val
+        siftDown(A, index, bottom);
+    }
+}
+
+void my_heap_sort(int A[], int n) {
+    // 建堆
+    for (int i = n / 2 - 1; i >= 0; i--)
+       siftDown(A, i, n - 1);
+    
+    for (int i = n - 1; i >= 1; i--) {
+        swap(A[i], A[0]);
+        siftDown(A, 0, i - 1);
+    }
+    
+    
+    for (int i = 0; i < n; i++)
+        cout << A[i] << ' ';
+    cout << endl;  
+}
+
+// !!!!!!!!!!!!!!!!!
+void qsort(int A[], int start, int end) { // 不稳定 改进是小数组时换选择排序
+    if (start >= end)
+        return;
+    
+    int i, j;
+    int key = A[end];
+    for (i = start-1, j = start; j <= end; j++) { // 分为start~i i~j两段
+        if (A[j] < key) { // j每次探索新数 i是比key大的数的左哨兵 j是右哨兵且最终指到end
+            i++; // 则新数属于左段start~i 同时i也是比key小的数的右哨兵
+            int tmp = A[i];
+            A[i] = A[j];
+            A[j] = tmp;           
+        }
+    }
+    int tmp = A[end]; // qsort关键就是中枢划分 现在从末尾换到中间
+    A[end] = A[i+1];
+    A[i+1] = tmp;
+        
+    qsort(A, start, i);
+    qsort(A, i+2, end);
+}
+
+void quick_sort(int A[], int n) {
+    qsort(A, 0, n - 1);
+    
+    for (int i = 0; i < n; i++)
+        cout << A[i] << ' ';
+    cout << endl;  
+}
+
+// !!!!!!!!!!!!!!!!
+void msort(int A[], int start, int end) {
+    if (start >= end) // 别忘了终止条件
+        return;
+    
+    int mid = (start + end) / 2; // 和qsort不同 这里先分割再做操作 主要操作在后面的归并
+    msort(A, start, mid);
+    msort(A, mid+1, end);
+    
+    // 将两个有序子列合并成一个有序列 一个复杂段的直接通过会给人自信
+    int* B = new int[end-start+1]; // 不算作弊
+    int i = 0, p = start, q = mid + 1;
+    while (p <= mid && q <= end) {
+        if (A[p] > A[q]) {
+            B[i] = A[q];
+            q++;
+        }
+        else {
+            B[i] = A[p];
+            p++;
+        }
+        i++;
+    }
+    while (p <= mid) {
+        B[i] = A[p];
+        p++;
+        i++;
+    }
+    while (q <= end) {
+        B[i] = A[q];
+        q++;
+        i++;
+    }
+    
+    for (int i = 0; i < end-start+1; i++)
+        A[start+i] = B[i];
+    delete []B;
+}
+
+void merge_sort(int A[], int n) {
+    msort(A, 0, n - 1);
+    
+    for (int i = 0; i < n; i++)
+        cout << A[i] << ' ';
+    cout << endl;  
+}
+
+// 计数排序 知道数的取值范围 cnt++ 线性复杂度
+
+int main() {
+    int n, A[100];
+    while (cin >> n) {
+        for (int i = 0; i < n; i++)
+            cin >> A[i];
+        
+        my_heap_sort(A, n);
+    }
+    return 0;
+}

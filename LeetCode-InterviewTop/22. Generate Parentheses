@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<string> an;
+    void generate(string& s, int left, int right) {
+        if (left == 0 && right == 0) {
+            an.push_back(s);
+            return;
+        }
+        
+        if (left > 0) {
+            string str = s + '(';
+            generate(str, left - 1, right);
+        }
+        if (right > 0 && right > left) { // 关键
+            string str = s + ')';
+            generate(str, left, right - 1);
+        }
+    }
+    
+    vector<string> generateParenthesis(int n) { // 和permutation思路一样
+        string s;
+        generate(s, n, n);
+        return an;
+    }
+};

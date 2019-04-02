@@ -1,0 +1,29 @@
+class Solution {
+public:
+    bool verify(vector<int> sequence) {
+        int num = sequence.size();
+        if (num == 0 || num == 1 || num == 2)
+            return true;
+            
+        int root = sequence[num - 1];
+        int m = 0, n = num - 2;
+        vector<int> left;
+        vector<int> right;
+        for (; sequence[m] < root; m++)
+            left.push_back(sequence[m]);       
+        for (; sequence[n] > root; n--)
+            right.push_back(sequence[n]);
+        
+        if (m - n == 1) // 关键 找到分割点 二叉排序树数字都是不同的
+            return verify(left) && verify(right);
+        else
+            return false;
+    }
+    
+    bool VerifySquenceOfBST(vector<int> sequence) {      
+        if (sequence.size() == 0) // 空树判定为False 因此拆一个函数处理
+            return false;
+        
+        return verify(sequence);
+    }
+};

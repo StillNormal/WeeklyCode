@@ -1,0 +1,48 @@
+class Solution {
+public:
+    vector<int> ans;
+    
+    void find(TreeNode* target, int k) {
+        if (target == NULL || k < 0)
+            return;
+        if (k == 0) {
+            ans.push_back(target->val);
+            return;
+        }
+        
+        find(target->left, k-1); // --k改值非常危险 要减请老实!!!
+        find(target->right, k-1);
+    }
+    
+    TreeNode* p;
+    void getParent(TreeNode* root, TreeNode* target) {
+        if (root == NULL)
+            return;
+        if (root->left == target || root->right == target) {
+            p = root;
+            return;
+        }
+        
+        getParent(root->left, target);
+        getParent(root->right, target);
+    }
+    
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int K) {
+        find(target, K);
+        cout << K << endl;
+        while (K > 0 && target != root) {
+            getParent(root, target);
+            K--;
+            cout << K << endl;
+            if (K == 0)
+                ans.push_back(p->val);
+            else if (p->left == target)
+                find(p->right, K-1);
+            else
+                find(p->left, K-1);
+            target = p;
+        }
+        
+        return ans;
+    }
+};

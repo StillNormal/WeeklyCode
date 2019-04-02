@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int cal(string& s, int p, int q) { // & 内存不会不够
+        for (int i = q; i >= p; i--) { // 计算是右结合
+            if (s[i] == '+')
+                return cal(s, p, i-1) + cal(s, i+1, q);
+            else if (s[i] == '-')
+                return cal(s, p, i-1) - cal(s, i+1, q);                
+        }
+        for (int i = q; i >= p; i--) { // 优先+-
+            if (s[i] == '*')
+                return cal(s, p, i-1) * cal(s, i+1, q);
+            else if (s[i] == '/')
+                return cal(s, p, i-1) / cal(s, i+1, q);
+        }
+        int num = 0;
+        for (int i = p; i <= q; i++) {
+            if (s[i] == ' ')
+                continue;
+            num *= 10;
+            num += s[i] - '0';
+        }
+        return num;
+    }
+    int calculate(string s) {
+        return cal(s, 0, s.size()-1); // 递归清晰
+    }
+};

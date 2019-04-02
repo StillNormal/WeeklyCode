@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        vector<int> dp(n, 1);
+        int idx2 = 0, idx3 = 0, idx5 = 0; // 记录用到哪个数
+        for (int i = 1; i < n; i++) {
+            dp[i] = min(2 * dp[idx2], min(3 * dp[idx3], 5 * dp[idx5]));
+            idx2 = dp[i] % 2 == 0 ? ++idx2 : idx2;
+            idx3 = dp[i] % 3 == 0 ? ++idx3 : idx3;
+            idx5 = dp[i] % 5 == 0 ? ++idx5 : idx5;
+        }
+        return dp[n-1];
+    }
+
+    /*
+    int nthUglyNumber(int n) { // 存不下 还可进一步优化
+        int MAX = 1000000;
+        vector<bool> dp(MAX, false);
+        dp[1] = true;
+        dp[2] = true;
+        dp[3] = true;
+        dp[5] = true;
+        
+        for (int i = 4; i < MAX; i++) {
+            if (i % 2 == 0)
+                dp[i] = dp[i/2];
+            if (i % 3 == 0)
+                dp[i] = dp[i/3];
+            if (i % 5 == 0)
+                dp[i] = dp[i/5];
+        }
+        
+        for (int i = 1; i < MAX; i++) {
+            if (dp[i])
+                n--;
+            if (n == 0)
+                return i;
+        }
+        
+        return -1;
+    }
+    */
+};

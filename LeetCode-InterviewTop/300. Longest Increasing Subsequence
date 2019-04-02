@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        if (n <= 1)
+            return n;
+        
+        // 以i结尾的最大是LIS 已知0 1 ... i-1求递归关系
+        vector<int> dp(n, 0);
+        dp[0] = 1;
+        for (int i = 1; i < n; i++) {
+            for (int j = i - 1; j >= 0; j--) { // 这里其实可以更快
+                if (nums[i] > nums[j])
+                    dp[i] = max(dp[j], dp[i]);
+            }
+            dp[i]++;
+        }
+        
+        auto an = max_element(dp.begin(), dp.end());
+        return *an;
+    }
+};

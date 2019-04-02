@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        // 不修改数组 不使用额外空间 应对重复元素的多次出现 但是算下标和步数很绕
+        int slow = 0, fast = 0;
+        do {
+            slow = nums[slow];
+            fast = nums[fast];
+            fast = nums[fast];
+        } while (slow != fast);
+        
+        // 只是相撞位置 还需找到环入口即重复元素
+        slow = 0;
+        while (slow != fast) {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        return slow;
+    }
+};

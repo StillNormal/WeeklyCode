@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> v;
+    
+    int find(int p, int q) {
+        if (p == q)
+            return v[p];
+        
+        int mid = (p + q) / 2;
+        
+        if (v[p] <= v[mid] && v[mid] <= v[q]) // 正常序
+            return v[p];
+        if (v[p] <= v[mid] && v[mid] >= v[q])
+            return find(mid + 1, q);
+        if (v[p] >= v[mid] && v[mid] <= v[q])
+            return find(p, mid); // 注意这里包括mid本身
+            
+        return 0; // 不存在逆序的可能
+    }
+    
+    int minNumberInRotateArray(vector<int> rotateArray) {
+        if (rotateArray.size() == 0)
+            return 0;
+        
+        v = rotateArray;
+        return find(0, rotateArray.size() - 1);
+    }
+};

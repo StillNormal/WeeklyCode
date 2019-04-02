@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        stack<int> s; // 类似括号匹配思路 这里用stack让代码简洁一些
+        for (int i = 0; i < nums.size(); i++) {
+            if (s.empty() || s.top() == nums[i])
+                s.push(nums[i]);
+            else
+                s.pop();
+        }
+        return s.top();
+    }
+};

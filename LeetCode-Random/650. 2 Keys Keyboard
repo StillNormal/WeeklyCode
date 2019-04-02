@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int minSteps(int n) {
+        vector<int> dp(n+1, 0); // 得到i个A所需最小步数
+        dp[1] = 0;
+        dp[2] = 2;
+        dp[3] = 3;
+        for (int i = 1; i <= n; i++) {
+            for (int j = i - 1; j >= 1; j--) {
+                if (i % j == 0) {
+                    dp[i] = dp[j] + i / j; // copy内容越来越长是关键
+                    break;
+                }
+            }
+        }
+        return dp[n];
+    }
+};

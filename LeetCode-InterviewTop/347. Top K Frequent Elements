@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) { // 三个容器速战速决
+        unordered_map<int, int> table;
+        for (int i = 0; i < nums.size(); i++)
+            table[nums[i]]++;
+        
+        priority_queue<pair<int, int>> min_k; // 下面有trick转最小堆
+        for (auto it = table.begin(); it != table.end(); it++) { // 再也不用担心不会迭代器写法
+            min_k.push(make_pair(-1 * it->second, it->first)); // 频数为先 make_pair直接用
+            if (min_k.size() > k)
+                min_k.pop();
+        }
+        
+        vector<int> ans;
+        while (!min_k.empty()) {
+            ans.push_back(min_k.top().second);
+            min_k.pop();
+        }
+        return ans;
+    }
+};

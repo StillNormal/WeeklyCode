@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int kthSmallest(vector<vector<int>>& matrix, int k) {
+        // 最简思路 最大堆求最小存前K个数!!!
+        // 这是因为堆容量有限 小的数加进来会顶掉堆顶最大的 最后就剩下k个最小数
+        priority_queue<int> pq;
+        for (int i = 0; i < matrix.size(); i++) {
+            for (int j = 0; j < matrix[i].size(); j++) {
+                    pq.push(matrix[i][j]);
+                    if (pq.size() > k)
+                        pq.pop();
+            }
+        }
+        return pq.top();
+    }
+};

@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        // 关键 第一遍预处理将各数左边的值乘到位置上存起来
+        vector<int> output; // 题示不算额外空间
+        int product = 1;
+        output.push_back(1);
+        for (int i = 1; i < nums.size(); i++) {
+            product *= nums[i-1]; // 关键 不把自身也乘进去
+            output.push_back(product);
+        }
+        product = 1;
+        for (int i = nums.size() - 2; i >= 0; i--) {
+            product *= nums[i+1];
+            output[i] = output[i] * product;
+        }
+        return output;
+    }
+};

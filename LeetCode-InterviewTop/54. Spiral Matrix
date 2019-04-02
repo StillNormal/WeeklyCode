@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) { // 关键是边界处理
+        vector<int> an;
+        int row = matrix.size();
+        if (row == 0)
+            return an;
+        
+        int col = matrix[0].size();
+        int cnt = 0, r = 0, c = 0, total = row * col;
+        int row_max = row, col_max = col, row_min = 1, col_min = 0;
+        
+        while (cnt < total) { // 方向不用单独记录
+            for (; c < col_max && cnt < total; c++, cnt++)
+                an.push_back(matrix[r][c]);
+            col_max--;
+            c--;
+            r++;
+            for (; r < row_max && cnt < total; r++, cnt++)
+                an.push_back(matrix[r][c]);
+            row_max--;
+            r--;
+            c--;
+            for (; c >= col_min && cnt < total; c--, cnt++)
+                an.push_back(matrix[r][c]);
+            col_min++;
+            c++;
+            r--;
+            for (; r >= row_min && cnt < total; r--, cnt++)
+                an.push_back(matrix[r][c]);
+            row_min++;
+            r++;
+            c++;
+        }
+        
+        return an;
+    }
+};

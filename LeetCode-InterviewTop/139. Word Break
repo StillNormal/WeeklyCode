@@ -1,0 +1,25 @@
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        vector<bool> a(s.size() + 1, false); // 状态数组以后这样写
+        a[0] = true; // 关键之一 启动
+        
+        // a记录到i为止是否能被分割 那么关键是->
+        // 已知0 1 ... i-1 如何定i的状态
+        for (int i = 1; i <= s.size(); i++) {
+            for (int j = i - 1; j >= 0; j--) {
+                if (a[j] == true) {
+                    string tmp = s.substr(j, i - j);
+                    vector<string>::iterator iter; // 如将vector先转好hashset会快一些
+                    iter = find(wordDict.begin(), wordDict.end(), tmp);
+                    if (iter != wordDict.end()) {
+                        a[i] = true;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        return a[s.size()];
+    }
+};
