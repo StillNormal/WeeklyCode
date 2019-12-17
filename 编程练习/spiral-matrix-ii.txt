@@ -1,0 +1,62 @@
+题目描述
+
+
+Given an integer n, generate a square matrix filled with elements from 1 to n2 in spiral order.
+For example,
+Given n =3,
+You should return the following matrix:
+[
+ [ 1, 2, 3 ],
+ [ 8, 9, 4 ],
+ [ 7, 6, 5 ]
+]
+
+
+主要是对数组的访问
+
+vector<vector<int> > generateMatrix(int n) {
+	vector<vector<int> > a(n);//声明空间!!
+	for (int i = 0; i < a.size(); i++)//这样定义二维的，而不是push_back或像map一样可以直接加
+		a[i].resize(n);
+
+	int pos_x = 0;
+	int pos_y = 0;
+	int directFlag = 0;//0 1 2 3四个方向
+	int turn = 0;//四个方向走一圈为一轮
+	for (int i = 1; i < n * n + 1; i++) {
+		a[pos_y][pos_x] = i;//输出矩阵和逻辑结构是反的
+		switch (directFlag) {
+		case 0: pos_x++;
+			if (pos_x >= n - turn) {
+				pos_x = n - 1 - turn;
+				directFlag = 1;
+				pos_y++;
+			}
+			break;
+		case 1: pos_y++;
+			if (pos_y >= n - turn) {
+				pos_y = n - 1 - turn;
+				directFlag = 2;
+				pos_x--;
+			}
+			break;
+		case 2: pos_x--;
+			if (pos_x <= -1 + turn) {
+				pos_x = 0 + turn;
+				directFlag = 3;
+				pos_y--;
+				turn++;
+			}
+			break;
+		case 3: pos_y--;
+			if (pos_y <= -1 + turn) {
+				pos_y = 0 + turn;
+				directFlag = 0;
+				pos_x++;
+			}
+			break;
+		default: break;
+		}
+	}
+	return a;
+}

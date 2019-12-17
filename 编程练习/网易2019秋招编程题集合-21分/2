@@ -1,0 +1,48 @@
+/*
+小易觉得高数课太无聊了，决定睡觉。不过他对课上的一些内容挺感兴趣，
+所以希望你在老师讲到有趣的部分的时候叫醒他一下。你知道了小易对一
+堂课每分钟知识点的感兴趣程度，并以分数量化，以及他在这堂课上每分
+钟是否会睡着，你可以叫醒他一次，这会使得他在接下来的k分钟内保持清
+醒。你需要选择一种方案最大化小易这堂课听到的知识点分值
+*/
+
+
+// 没做好 90%通过 漏了边际情况 下面已改正
+
+#include <iostream>
+using namespace std;
+#include <string.h>
+ 
+int main() {
+    int n, k;
+    int score[100000];
+    bool wake[100000];
+    while (cin >> n >> k) {
+        for (int i = 0; i < n; i++)
+            cin >> score[i];
+        for (int i = 0; i < n; i++)
+            cin >> wake[i];
+         
+        long long int now = 0;
+        for (int i = 0; i < n; i++)
+            if (wake[i])
+                now += score[i];
+         
+        for (int i = 0; i < k; i++)
+            if (!wake[i])
+                now += score[i];
+        
+        int max = now; // 关键 n=k时max没被赋值 显然循环合理这个90%是边际情况
+        for (int i = k; i < n; i++) { // 每次减首增尾一个
+            if (!wake[i])
+                now += score[i];
+            if (!wake[i-k])
+                now -= score[i-k];
+            if (now > max)
+                max = now;
+        }
+         
+        cout << max << endl;
+    }
+    return 0;
+}

@@ -1,4 +1,4 @@
-    /**
+/**
  * Definition for a binary tree node.
  * struct TreeNode {
  *     int val;
@@ -9,27 +9,53 @@
  */
 class Solution {
 public:
-
-    int rob(TreeNode* root) {
-        return max(robrob(root, true), robrob(root, false));
-    }
-    
-    int robrob(TreeNode* node, bool isRob) {
-        if (node == NULL)
+    /*
+    // 法一是unordered_map记录
+    int Rob(TreeNode* root, bool flag) {
+        int sum = 0;
+        if (!root)
             return 0;
         
-        int l_no = robrob(node->left, false);
-        int r_no = robrob(node->right, false);
-        
-        if (isRob) 
-            return node->val + l_no + r_no;
-        else {
-            int l_yes = robrob(node->left, true);
-            int r_yes = robrob(node->right, true);
-            int money = max(l_yes + r_yes, l_yes + r_no);
-            money = max(money, l_no + r_yes);
-            money = max(money, l_no + r_no);
-            return money;
+        if (flag) {
+            sum += root->val;
+            sum += Rob(root->left, false) + Rob(root->right, false);
         }
+        else {
+            int l = Rob(root->left, true);
+            int l_n = Rob(root->left, false);
+            int r = Rob(root->right, true);
+            int r_n = Rob(root->right, false);
+            sum = max(max(max(l+r, l+r_n), l_n+r), l_n+r_n);
+        }
+        
+        return sum;
+    }
+    
+    int rob(TreeNode* root) {
+        return max(Rob(root, true), Rob(root, false));
+    }
+    */
+    
+    void Rob(TreeNode* root, int& yes, int& no) { // 关键是只递归一次把两值算到参数
+        if (!root) {
+            yes = 0;
+            no = 0;
+            return;
+        }
+        
+        int l = 0, l_n = 0, r = 0, r_n = 0;
+        Rob(root->left, l, l_n);
+        Rob(root->right, r, r_n);
+        
+        yes += root->val + l_n + r_n;
+        no += max(max(max(l+r, l+r_n), l_n+r), l_n+r_n); // 并非l+r
+            
+        return;
+    }
+    
+    int rob(TreeNode* root) {
+        int yes = 0, no = 0;
+        Rob(root, yes, no);
+        return max(yes, no);
     }
 };

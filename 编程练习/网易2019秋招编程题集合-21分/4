@@ -1,0 +1,84 @@
+/*
+又到了周末，小易的房间乱得一团糟。
+他希望将地上的杂物稍微整理下，使每团杂物看起来都紧凑一些，没有那么乱。
+地上一共有n团杂物，每团杂物都包含4个物品。第i物品的坐标用(ai,bi)表示，小易每次都可以将它绕着(xi,yi)逆时针旋转，这将消耗他的一次移动次数。如果一团杂物的4个点构成了一个面积不为0的正方形，我们说它是紧凑的。
+因为小易很懒，所以他希望你帮助他计算一下每团杂物最少需要多少步移动能使它变得紧凑
+*/
+
+// 一点没做出 线下也没写出来
+
+
+#include <iostream>
+using namespace std;
+
+bool check(int item[][4]) { // 判断正方形用六条边距离而不是斜率
+    int dis[6], y[6], x[6];
+    for (int i = 0; i < 4; i++) {
+        y[i] = item[(i+1)%4][1] - item[i][1];
+        x[i] = item[(i+1)%4][0] - item[i][0];
+        dis[i] = y[i] * y[i] + x[i] * x[i];
+    }
+    y[4] = item[2][1] - item[0][1];
+    x[4] = item[2][0] - item[0][0];
+    y[5] = item[3][1] - item[1][1];
+    x[5] = item[3][0] - item[1][0];
+    dis[4] = y[4] * y[4] + x[4] * x[4];
+    dis[5] = y[5] * y[5] + x[5] * x[5];
+    for (int i = 1; i < 6; i++)
+        if (dis[0] != dis[i])
+            return false;
+    return true;
+}
+
+void Ten_2_Four(int num, int re[]) {
+    int i = 0;
+    while (num != 0) {
+        num /= 4;
+        re[i] = num % 4;
+        i++;
+    }
+}
+
+void copy(int item[][4], int tmp[][4]) {
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            tmp[i][j] = item[i][j];
+}
+
+void shift(int item[][4], int cnts[]) {
+    for (int i = 0; i < 4; i++) {
+        while (cnts[i] != 0) {
+            // x y绕a b逆时针旋90度一次
+            // x' = a - y + b   y' = b + x - a
+            item[i][0] = item[i][2] - item[i][1] + item[i][3];
+            item[i][1] = item[i][3] + item[i][0] - item[i][2];
+            cnts[i]--;
+        }
+    }
+}
+
+int main() {
+    int n;
+    int item[4][4]; // 第二维 a b x y
+    while (cin >> n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < 4; j++)
+                cin >> item[j][0] >> item[j][1] >> item[j][2] >> item[j][3];          
+            int min = 999999;
+            for (int j = 65; j < 256; j++) { // 4进制 3333代表旋转每个物品旋3次
+                int cnts[4];
+                Ten_2_Four(j, cnts);
+                int cnt = cnts[0] + cnts[1] + cnts[2] + cnts[3];
+                int tmp[4][4];
+                copy(item, tmp);
+                shift(tmp, cnts);
+                if (check(tmp)) {
+                    if (cnt < min)
+                        min = cnt;
+                }
+            }
+           // cout << min << endl;
+        }
+    }
+    return 0;
+}

@@ -1,0 +1,29 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (root == NULL)
+            return root;
+        if (root == p || root == q) // 先执行 这里找存在 供下面使用 判断结果是最终返回
+            return root;
+        
+        TreeNode* l = lowestCommonAncestor(root->left, p, q); // 功能就是找pq父节点 只考虑返回值
+        TreeNode* r = lowestCommonAncestor(root->right, p, q);
+        if (l && !r)
+            return l;
+        else if (!l && r)
+            return r;
+        else if (l && r) // 唯一是公共父节点情况 不存在它之上
+            return root;
+        else
+            return NULL;
+    }
+};

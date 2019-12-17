@@ -1,0 +1,47 @@
+class Solution {
+public:
+    
+    int jump(vector<int>& nums) {
+        int n = nums.size();
+        if (n == 1)
+            return 0;
+        
+        int i = 0, cnt = 0;
+        while (i <= n - 1) {
+            int range = nums[i]; // 处于i
+            
+            int max_val = -1, max_idx = -1; // 直接赋值i循环崩溃
+            for (int j = i + 1; j <= i + range; j++) {
+                if (i + range >= n - 1) {
+                    max_idx = n;
+                    break;
+                }
+                if (nums[j] + j >= max_val) { // 光取最大不行
+                    max_val = nums[j] + j;
+                    max_idx = j;
+                }
+            }
+            i = max_idx;
+            cnt++;
+        }
+        return cnt;
+    }
+    
+    /*
+    int jump(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n, INT_MAX);
+        dp[0] = 0;
+        
+        for (int i = 1; i < n; i++) // 不是好动归 超时
+            for (int j = i - 1; j >= 0; j--)
+                if (j + nums[j] >= i)
+                    dp[i] = min(dp[i], dp[j] + 1);
+        
+        for (auto z : dp)
+            cout << z << " ";
+        
+        return dp[n-1]; 
+    }
+    */
+};

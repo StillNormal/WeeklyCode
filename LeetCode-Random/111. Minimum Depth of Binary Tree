@@ -1,0 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    
+    int min_depth = INT_MAX;
+    void depth(TreeNode* root, int layer) { // 自顶向下式
+        if (!root)
+            return;
+        if (!root->left && !root->right) { // 只有叶子节点才算
+            min_depth = min(min_depth, layer);
+            return;            
+        }
+        
+        depth(root->left, layer+1);
+        depth(root->right, layer+1);
+    }
+    
+    int minDepth(TreeNode* root) { // bfs层数容易乱
+        if (!root)
+            return 0;
+        
+        depth(root, 1);
+        return min_depth;
+    }
+};

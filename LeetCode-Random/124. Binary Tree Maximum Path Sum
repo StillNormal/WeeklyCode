@@ -1,0 +1,85 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int val_stop = INT_MIN; // 用一个额外变量记录那些不能向上连的最大值
+    int pathSum(TreeNode* root) {
+        if (!root)
+            return INT_MIN / 3; // 关键是处理负数
+        
+        int val_l = pathSum(root->left);
+        int val_r = pathSum(root->right);
+        
+        val_stop = max(max(max(val_stop, val_l), val_r), val_l+val_r+root->val);
+    
+        if (!root->left) // 处理叶子节点
+            return max(val_r+root->val, root->val);
+        else if (!root->right)
+            return max(val_l+root->val, root->val);
+        else if (!root->left && !root->right)
+            return root->val;
+        else
+            return max(root->val, max(val_l+root->val, val_r+root->val));
+    }
+    
+    int maxPathSum(TreeNode* root) {
+        int val_link = pathSum(root);
+        return max(val_stop, val_link);
+    }
+    
+    
+//     struct data {
+//         int val;
+//         string status;
+//     };
+//     data myMaxPathSum(TreeNode* root) {
+//         if (!root) {
+//             data d;
+//             d.val = 0;
+//             d.status = "leaf";
+//             return d;
+//         }
+        
+//         data d;
+//         d.val = root->val;
+//         d.status = "link";
+        
+//         data left = myMaxPathSum(root->left);
+//         data right = myMaxPathSum(root->right);
+        
+//         if (left.val > d.val) {
+//             d.val = left.status == "leaf" ? d.val : left.val; 
+//             d.status = "nolink";
+//         }
+//         if (right.val > d.val) {
+//             d.val = right.status == "leaf" ? d.val : right.val;
+//             d.status = "nolink";
+//         }
+//         // 下面都会加上d.val本身 不用leaf
+//         if (right.status == "link" && root->val + right.val > d.val) {
+//             d.val = root->val + right.val;
+//             d.status = "link";
+//         }
+//         if (left.status == "link" && root->val + left.val > d.val) {
+//             d.val = root->val + left.val;
+//             d.status = "link";
+//         }
+//         if (left.status == "link" && right.status == "link" && root->val + left.val + right.val > d.val) {
+//             d.val = root->val + left.val + right.val;
+//             d.status = "nolink";
+//         }
+//         cout << d.val << endl;
+//         return d; // 只考虑本轮最优 没有次轮情况
+//     }
+//     int maxPathSum(TreeNode* root) {
+//         data d = myMaxPathSum(root);
+//         return d.val;
+//     }
+};

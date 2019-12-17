@@ -1,0 +1,43 @@
+/*
+小易来到了一条石板路前，每块石板上从1挨着编号为：1、2、3.......
+这条石板路要根据特殊的规则才能前进：对于小易当前所在的编号为K的 石板，小易单次只能往前跳K的一个约数(不含1和K)步，即跳到K+X(X为K的一个非1和本身的约数)的位置。 小易当前处在编号为N的石板，他想跳到编号恰好为M的石板去，小易想知道最少需要跳跃几次可以到达。
+例如：
+N = 4，M = 24：
+4->6->8->12->18->24
+于是小易最少需要跳跃5次，就可以从4号石板跳到24号石板
+*/
+
+
+// 没做好 超时 动态规划是想到了 但求因数其实可循环到sqrt(n)然后多一个push(n/i)
+
+#include <iostream>
+using namespace std;
+#include <vector>
+#include <string.h>
+ 
+vector<int> getK(int n) {
+    vector<int> v;
+    for (int i = 2; i < n; i++) {
+        if (n % i == 0)
+            v.push_back(i);
+    }
+    return v;
+}
+ 
+int main() {
+    int N, M;
+    int A[100000];
+    while (cin >> N >> M) {
+        memset(A, 999999, 100000);
+        A[N] = 0;
+        for (int i = N; i <= M; i++) {
+            if (A[i] == 999999)
+                continue;
+            vector<int> v = getK(i);
+            for (int j = 0; j < v.size(); j++) // v[j] = K
+                A[i+v[j]] = A[i+v[j]] > A[i] + 1 ? A[i] + 1 : A[i+v[j]];
+        }
+        cout << A[M] << endl;
+    }
+    return 0;
+}

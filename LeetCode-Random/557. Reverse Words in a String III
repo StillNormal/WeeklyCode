@@ -1,0 +1,21 @@
+class Solution {
+public:
+    
+    void reverse(string& s, int left, int right) {
+        for (int i = 0; i <= (right - left) / 2; i++)
+            swap(s[left+i], s[right-i]); // i从0到n写法更舒服
+    }
+    
+    string reverseWords(string s) {
+        int left = 0, right = 0;
+        for (int i = 0 ; i < s.size(); i++) {
+            if (s[i] == ' ') {
+                right = i - 1;
+                reverse(s, left, right);
+                left = i + 1;
+            }
+        }
+        reverse(s, left, s.size()-1); // 结尾也算
+        return s;
+    }
+};

@@ -1,15 +1,47 @@
-/**
- * Definition for singly-linked list with a random pointer.
- * struct RandomListNode {
- *     int label;
- *     RandomListNode *next, *random;
- *     RandomListNode(int x) : label(x), next(NULL), random(NULL) {}
- * };
- */
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+
+    Node() {}
+
+    Node(int _val, Node* _next, Node* _random) {
+        val = _val;
+        next = _next;
+        random = _random;
+    }
+};
+*/
 class Solution {
 public:
+    Node *copyRandomList(Node *head) { // 空间复杂度O(1)
+        Node* nhead = NULL, *ntail;
+        for (Node* h = head; h != NULL; h = h->next) {
+            Node* node = new Node(h->val); 
+            node->next = NULL;
+            if (nhead==NULL) // 尾插法标准写法
+                nhead = node;
+            else 
+                ntail->next = node;
+            ntail = node;
+            
+            node->random = h->random; // 关键是复制的random先指向旧链表节点
+            h->random = node;
+        }
+        
+        for (Node *nh = nhead; nh != NULL; nh = nh->next) {
+            if (nh->random != NULL)
+                nh->random = nh->random->random;
+        }
+        
+        return nhead;
+    }
+    /*
     RandomListNode *copyRandomList(RandomListNode *head) {
-        unordered_map<RandomListNode*, RandomListNode*> table; // 空间代价 旧节点->新节点 而不是LabelID
+        unordered_map<RandomListNode*, RandomListNode*> save; // 空间代价 旧节点->新节点
         
         RandomListNode* nhead = NULL, *ntail;
         for (RandomListNode* h = head; h != NULL; h = h->next) {
@@ -20,12 +52,13 @@ public:
                 ntail->next = node;
             ntail = node;            
             
-            table[h] = node;
+            save[h] = node;
         }
         
         for (RandomListNode* h = head, *nh = nhead; h != NULL; h = h->next, nh = nh->next)
-            nh->random = table[h->random];
+            nh->random = save[h->random];
         
         return nhead;
     }
+    */
 };

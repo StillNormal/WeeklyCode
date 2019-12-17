@@ -1,0 +1,34 @@
+class Solution {
+public:
+    
+    int end = 0;
+    int tar = 0;
+    vector<vector<int>> result;
+    
+    void check(vector<int>& candidates, int start, int val, vector<int> ans) { // 不用&
+        if (start > end)
+            return;
+        
+        for (int i = 0; i < 99; i++) { // 选还是不选到一次考虑所有 剪枝刚好过
+            if (i > 0)
+                ans.push_back(candidates[start]);
+            if (val + i * candidates[start] < tar)
+                check(candidates, start+1, val+i*candidates[start], ans);
+            else if (val + i * candidates[start] == tar)
+                result.push_back(ans);
+            else
+                break;
+        }
+    }
+    
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        end = candidates.size() - 1;
+        tar = target;
+        vector<int> ans;
+        
+        check(candidates, 0, 0, ans);
+        
+        return result;
+    }
+};

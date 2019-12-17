@@ -1,0 +1,46 @@
+class Solution {
+public:
+    vector<vector<string>> ans;
+    vector<vector<string>> solveNQueens(int n) {
+        vector<int> pos(n, 0);
+        queen(pos, 0, n);
+        return ans;
+    }
+    
+    void queen(vector<int>& pos, int now, int n) { // 递归做不难
+        if (now == n) {
+            ans.push_back(trans(pos));
+            return;
+        }
+        
+        
+        for (int i = 0; i < n; i++) {
+            pos[now] = i;
+            if (check(pos, now, n))
+                queen(pos, now+1, n);
+        }
+    }
+    
+    bool check(vector<int>& pos, int now, int n) {
+        for (int i = 1; i <= now; i++) { // =
+            for (int j = 0; j < i; j++) {
+                if (pos[i] == pos[j]) 
+                    return false;
+                if (abs(pos[i] - pos[j]) == abs(i - j))
+                    return false;
+            }
+        }
+        return true;
+    }
+    
+    vector<string> trans(vector<int> pos) {
+        vector<string> ret;
+        int n = pos.size();
+        for (int i = 0; i < n; i++) {
+            string s(n, '.');
+            s[pos[i]] = 'Q';
+            ret.push_back(s);
+        }
+        return ret;
+    }
+};

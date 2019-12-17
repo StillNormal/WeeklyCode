@@ -1,0 +1,52 @@
+题目描述
+
+
+The string"PAYPALISHIRING"is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
+P   A   H   N
+A P L S I I G
+Y   I   R
+And then read line by line:"PAHNAPLSIIGYIR"
+
+Write the code that will take a string and make this conversion given a number of rows:
+string convert(string text, int nRows);
+convert("PAYPALISHIRING", 3)should return"PAHNAPLSIIGYIR".
+
+
+
+class Solution {
+    public:
+        string convert(string s, int nRows) {
+        if (nRows == 1)//注意这种情况
+            return s;
+            
+        int group = nRows * 2 - 2;//一个竖着的Z的前两列作为一个组
+        int len = s.length();
+        string result;
+
+        int j = 0;//第一行   
+        while (j < len) {
+            result += s[j];
+            j += group;
+        }
+
+        for (int i = 1; i < nRows - 1; i++) {//中间行数
+            int j = i;
+            while (j < len) {
+                result += s[j];
+                j += group - 2 * i;
+                if (j >= len)//需检测一次
+                    break;
+                result += s[j];
+                j += 2 * i;
+            }
+        }
+
+        j = nRows - 1;//最后一行
+        while (j < len) {
+            result += s[j];
+            j += group;
+        }
+
+        return result;//包含的是string.h就无法cout输出一个string
+    }
+};

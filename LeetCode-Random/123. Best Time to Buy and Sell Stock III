@@ -1,0 +1,59 @@
+class Solution {
+public:
+    void profit(vector<int>& prices, vector<int>& left, vector<int>& right) {
+        int n = prices.size();
+            
+        int lowest = INT_MAX;
+        int max_profit = INT_MIN;
+        for (int i = 0; i < n; i++) { // 一次遍历保存好
+            lowest = min(lowest, prices[i]);
+            max_profit = max(prices[i] - lowest, max_profit);
+            left[i] = max_profit;
+        }
+        
+        int highest = INT_MIN;
+        int max_loss = INT_MAX;
+        for (int i = n - 1; i >= 0; i--) { // 关键是反向遍历求且只能求最大亏
+            highest = max(highest, prices[i]);
+            max_loss = min(prices[i] - highest, max_loss);
+            right[i] = max_loss;
+        }
+        return;
+    }
+    
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        vector<int> left(n, 0);
+        vector<int> right(n, 0);
+        profit(prices, left, right);
+        
+        int val = 0;
+        for (int i = 0; i < n; i++) // 可以当天买后卖出再买
+            val = max(val, left[i] - right[i]);
+        return val;
+    }
+    
+    /*
+    int profit(vector<int>& prices, int a, int b) {
+        int money = 0;
+        int lowest = prices[a];
+        for (int i = a + 1; i < b; i++) {
+            money = max(money, prices[i] - lowest);
+            lowest = min(lowest, prices[i]);
+        }
+        return money;
+    }
+    
+    int maxProfit(vector<int>& prices) {
+        int val = 0;
+        int n = prices.size();
+        for (int i = 0; i < n; i++) {
+            int left = profit(prices, 0, i);
+            int right = profit(prices, i, n);
+            cout << left << " " <<  right << " " << i << endl;
+            val = max(val, left + right);
+        }
+        return val;
+    }
+    */
+};

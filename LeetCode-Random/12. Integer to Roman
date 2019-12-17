@@ -1,0 +1,40 @@
+class Solution {
+public:
+    
+    string roman(char one, char five, char ten, int num) {
+        string str = "";
+        switch(num) {
+            case 1: str += one; break;
+            case 2: str += one; str += one; break;
+            case 3: str += one; str += one; str += one; break;
+            case 4: str += one; str += five; break;
+            case 5: str += five; break;
+            case 6: str += five; str += one; break;
+            case 7: str += five; str += one; str += one; break;
+            case 8: str += five; str += one; str += one; str += one; break;
+            case 9: str += one; str += ten; break; 
+        }
+        return str;
+    }
+    
+    
+    string intToRoman(int num) {
+        string ans = "";
+        if (num >= 0) {
+            ans = roman('I', 'V', 'X', num % 10) + ans; // 避免使用insert
+            num /= 10;
+        }
+        if (num >= 0) {
+            ans = roman('X', 'L', 'C', num % 10) + ans;
+            num /= 10;
+        }
+        if (num >= 0) {
+            ans = roman('C', 'D', 'M', num % 10) + ans;
+            num /= 10;
+        }
+        if (num >= 0) 
+            ans = roman('M', 'M', 'M', num % 10) + ans;
+
+        return ans;
+    }
+};

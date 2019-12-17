@@ -1,0 +1,35 @@
+/*
+小易有一个圆心在坐标原点的圆，小易知道圆的半径的平方。小易认为在圆上的点而且横纵坐标都是整数的点是优雅的，小易现在想寻找一个算法计算出优雅的点的个数，请你来帮帮他。
+例如：半径的平方如果为25
+优雅的点就有：(+/-3, +/-4), (+/-4, +/-3), (0, +/-5) (+/-5, 0)，一共12个点。
+*/
+
+
+// 没做好 超时 关键在只用判断(int)i == i 少一重循环
+
+#include <iostream>
+#include <math.h>
+using namespace std;
+ 
+int main() {
+    int n = 0;
+    int cnt = 0;
+    while (cin >> n) {
+        bool is_idx = false;
+        for (int i = 0; i <= sqrt(n); i++) {
+            int left = n - i * i;
+            for (int j = 0; j <= sqrt(left); j++) {
+                if (j * j == left) {
+                    cnt++;
+                    if (i == 0 || j == 0)
+                        is_idx = true;
+                }
+            }
+        }
+        cnt *= 4;
+        if (is_idx)
+            cnt -= 4;
+        cout << cnt << endl;
+    }
+    return 0;
+}

@@ -1,0 +1,27 @@
+/*
+小易去附近的商店买苹果，奸诈的商贩使用了捆绑交易，只提供6个每袋和8个
+每袋的包装(包装不可拆分)。 可是小易现在只想购买恰好n个苹果，小易想购
+买尽量少的袋数方便携带。如果不能购买恰好n个苹果，小易将不会购买
+*/
+
+#include <iostream>
+using namespace std;
+int main() {
+    int n;
+    while (cin >> n) {
+        int min = 999999;
+        for (int i = 0; i <= n / 8; i++) {
+            int left = n - 8 * i;
+            for (int j = 0; j <= left; j++) {
+                if (6 * j == left && i + j < min) {
+                    min = i + j;
+                }
+            }
+        }
+        if (min == 999999)
+            cout << -1 << endl;
+        else
+            cout << min << endl;
+    }
+    return 0;
+}

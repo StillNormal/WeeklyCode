@@ -1,0 +1,47 @@
+/*
+
+小易在学校中学习了关于字符串的理论, 于是他基于此完成了一个字典的项目。
+
+小易的这个字典很奇特, 字典内的每个单词都包含n个'a'和m个'z', 并且所有单词按照字典序排列。
+
+小易现在希望你能帮他找出第k个单词是什么。
+*/
+
+// 没做出 线下也只通过30% k的递减效率太低没通过
+
+#include <iostream>
+using namespace std;
+#include <string>
+
+void findK(int n, int m, long long int& k, string s) { // k的范围题中已说明 
+    if (k <= 0)
+        return;
+        
+    if (n == 0 || m == 0) {
+        k--;
+        if (k == 0) {
+            for (int i = 0; i < n; i++)
+                s = s + 'a';
+            for (int i = 0; i < m; i++)
+                s = s + 'z';
+            cout << s << endl;
+        }
+        return;
+    }
+    
+    string s1 = s + 'a';
+    findK(n-1, m, k, s1);
+    
+    string s2 = s + 'z';
+    findK(n, m-1, k, s2);
+}
+
+
+int main() {
+    int n, m;
+    long long int k;
+    while (cin >> n >> m >> k)
+        findK(n, m, k, "");
+    
+    return 0;
+}

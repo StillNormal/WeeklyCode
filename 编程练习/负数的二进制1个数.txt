@@ -1,0 +1,19 @@
+题目描述
+
+输入一个整数，输出该数二进制表示中1的个数。其中负数用补码表示。
+
+     int NumberOf1(int n) {
+         int num = 0;
+         if(n < 0) {//预处理，不然死循环
+             n = n & 0x7FFFFFFF;
+             num++;
+         }             
+
+         while (n != 0) {
+             unsigned int bit = n & 1;
+             if (bit == 1)
+                 num++;
+             n = n >> 1;//c中左移逻辑移位，右端补0，右移算数移位，左端补最高位的符号位
+         }
+         return num;
+     }

@@ -1,0 +1,47 @@
+class Solution {
+public:
+    string convert(string s, int numRows) {          
+        int len = s.size();
+        char data[1000][1200];
+        for (int i = 0; i < numRows; i++)
+            for (int j = 0; j < len; j++)
+                data[i][j] = ' ';
+        
+        int x = 0, y = 0;
+        bool isDown  = true; // down 1 upright 0
+        for (int i = 0; i < s.size(); i++) {
+            data[x][y] = s[i];
+            if (isDown) {
+                x++;
+                if (x == numRows-1)
+                    isDown = false;
+                if (x > numRows - 1) {
+                    x--;
+                    y++;
+                }
+            }
+            else {
+                x--;
+                y++;
+                if (x == 0)
+                    isDown = true;
+                if (x < 0) {
+                    isDown = true;
+                    x++;
+                }
+                    
+            }   
+        }
+        
+        string ans = "";
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < len; j++) {
+                if (data[i][j] != ' ')
+                    ans += data[i][j];
+            }
+        }
+        
+        return ans;
+        
+    }
+};

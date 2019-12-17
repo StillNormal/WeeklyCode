@@ -1,0 +1,15 @@
+class Solution {
+public:
+    
+    int findMin(vector<int>& nums) {
+        int idx  = nums.size() - 1;
+        for (int i = 1; i < nums.size(); i++) {
+            if (nums[i] < nums[i-1]) {
+                idx = i;
+                break;
+            }
+        }
+        
+        return min(nums[0], nums[idx]);
+    }
+};
